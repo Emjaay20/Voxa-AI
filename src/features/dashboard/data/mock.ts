@@ -20,12 +20,12 @@ export const mockUpcomingInterview = {
 }
 
 export const mockCoaches = [
-  { id: "1", name: "Interview Coach", status: "Ready", percent: 100, icon: "Target" },
-  { id: "2", name: "Grammar Coach", status: "Analyzing...", percent: 45, icon: "MessageCircle" },
-  { id: "3", name: "Confidence Coach", status: "Waiting", percent: 0, icon: "BrainCircuit" },
-  { id: "4", name: "Technical Coach", status: "Ready", percent: 100, icon: "Code" },
-  { id: "5", name: "Clarity Coach", status: "Analyzing...", percent: 80, icon: "Sparkles" },
-  { id: "6", name: "Behavioral Coach", status: "Ready", percent: 100, icon: "Users" },
+  { id: "1", name: "Interview Coach", role: "Analyzes structure, STAR method, overall delivery.", status: "Ready", percent: 100, icon: "Target", colorClass: "text-blue-500", bgClass: "bg-blue-500/10" },
+  { id: "2", name: "Grammar Coach", role: "Finds filler words, grammar issues, clarity problems.", status: "Analyzing...", percent: 45, icon: "MessageCircle", colorClass: "text-purple-500", bgClass: "bg-purple-500/10" },
+  { id: "3", name: "Confidence Coach", role: "Measures hesitation, certainty, speech confidence.", status: "Waiting", percent: 0, icon: "BrainCircuit", colorClass: "text-emerald-500", bgClass: "bg-emerald-500/10" },
+  { id: "4", name: "Technical Coach", role: "Reviews correctness, depth, engineering decisions.", status: "Ready", percent: 100, icon: "Code", colorClass: "text-amber-500", bgClass: "bg-amber-500/10" },
+  { id: "5", name: "Conversation Coach", role: "Evaluates pacing, engagement, and active listening.", status: "Analyzing...", percent: 80, icon: "Sparkles", colorClass: "text-cyan-500", bgClass: "bg-cyan-500/10" },
+  { id: "6", name: "Negotiation Coach", role: "Salary discussions, communication, positioning.", status: "Ready", percent: 100, icon: "Users", colorClass: "text-rose-500", bgClass: "bg-rose-500/10" },
 ]
 
 export const mockMetrics = {

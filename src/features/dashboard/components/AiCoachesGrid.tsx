@@ -27,31 +27,27 @@ export function AiCoachesGrid() {
 
           return (
             <Card key={coach.id} className="flex flex-col justify-between gap-4 rounded-[20px] border-border/40 bg-card p-5 shadow-sm transition-all hover:border-primary/20 hover:shadow-md">
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-3">
-                  <div className={cn(
-                    "flex size-10 items-center justify-center rounded-xl",
-                    isReady ? "bg-emerald-500/10 text-emerald-500" :
-                    isAnalyzing ? "bg-primary/10 text-primary" :
-                    "bg-muted text-muted-foreground"
-                  )}>
-                    <Icon className="size-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-sm">{coach.name}</h4>
-                    <div className="flex items-center gap-1.5 mt-0.5">
-                      {isReady && <CheckCircle2 className="size-3 text-emerald-500" />}
-                      {isAnalyzing && <Loader2 className="size-3 animate-spin text-primary" />}
-                      {isWaiting && <Clock className="size-3 text-muted-foreground" />}
-                      <span className={cn(
-                        "text-xs font-medium",
-                        isReady ? "text-emerald-600 dark:text-emerald-400" :
-                        isAnalyzing ? "text-primary" :
-                        "text-muted-foreground"
-                      )}>
-                        {coach.status}
-                      </span>
-                    </div>
+              <div className="flex items-start gap-4">
+                <div className={cn(
+                  "flex size-10 shrink-0 items-center justify-center rounded-xl",
+                  isWaiting ? "bg-muted text-muted-foreground" : cn(coach.bgClass, coach.colorClass)
+                )}>
+                  <Icon className="size-5" />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <h4 className="font-semibold text-sm leading-none">{coach.name}</h4>
+                  <p className="text-[11px] leading-tight text-muted-foreground">{coach.role}</p>
+                  
+                  <div className="flex items-center gap-1.5 mt-1.5">
+                    {isReady && <CheckCircle2 className={cn("size-3", coach.colorClass)} />}
+                    {isAnalyzing && <Loader2 className={cn("size-3 animate-spin", coach.colorClass)} />}
+                    {isWaiting && <Clock className="size-3 text-muted-foreground" />}
+                    <span className={cn(
+                      "text-xs font-medium",
+                      isWaiting ? "text-muted-foreground" : coach.colorClass
+                    )}>
+                      {coach.status}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -60,12 +56,10 @@ export function AiCoachesGrid() {
                 <Progress 
                   value={coach.percent} 
                   className={cn(
-                    "h-1.5 w-full",
-                    isReady ? "bg-emerald-500/20" : "bg-primary/20"
+                    "h-1.5 w-full mt-2",
+                    coach.bgClass
                   )} 
-                  indicatorClassName={cn(
-                    isReady ? "bg-emerald-500" : "bg-primary"
-                  )}
+                  indicatorClassName={coach.bgClass.replace('/10', '').replace('bg-', 'bg-')}
                 />
               )}
             </Card>

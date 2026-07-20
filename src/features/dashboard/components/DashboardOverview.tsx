@@ -1,43 +1,59 @@
 import * as React from "react"
-import { Users, Target, AlertTriangle } from "lucide-react"
-import { mockMetrics, mockUser } from "../data/mock"
-import { MetricCard } from "./MetricCard"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ProgressJourney } from "./ProgressJourney"
+import { UpcomingInterview } from "./UpcomingInterview"
+import { AiInsightCard } from "./AiInsightCard"
+import { AiCoachesGrid } from "./AiCoachesGrid"
 import { PerformanceChart } from "./PerformanceChart"
 import { RecentInterviews } from "./RecentInterviews"
 
 export function DashboardOverview() {
   return (
-    <div className="flex flex-col gap-8 max-w-7xl mx-auto">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Welcome back, {mockUser.name}</h1>
-        <p className="text-muted-foreground mt-2">Here is a summary of your interview performance.</p>
-      </div>
+    <div className="flex flex-col gap-10 max-w-6xl mx-auto pb-10">
+      
+      {/* Row 1: Progress Journey & Streak */}
+      <section>
+        <ProgressJourney />
+      </section>
 
-      <div className="grid gap-6 md:grid-cols-3">
-        <MetricCard 
-          title="Total Interviews" 
-          value={mockMetrics.totalInterviews} 
-          icon={Users} 
-          trend={{ value: "+2 this week", isPositive: true }}
-        />
-        <MetricCard 
-          title="Avg. Score" 
-          value={`${mockMetrics.avgScore}/10`} 
-          icon={Target} 
-          trend={{ value: "+0.4", isPositive: true }}
-        />
-        <MetricCard 
-          title="Areas for Improvement" 
-          value={mockMetrics.areasForImprovement} 
-          icon={AlertTriangle} 
-          trend={{ value: "Action required", isPositive: false }}
-        />
-      </div>
+      {/* Row 2: Upcoming Interview & AI Insight */}
+      <section className="grid gap-6 md:grid-cols-2">
+        <div className="h-[200px]">
+          <UpcomingInterview />
+        </div>
+        <div className="h-[200px]">
+          <AiInsightCard />
+        </div>
+      </section>
 
-      <div className="grid gap-6 md:grid-cols-[2fr_1fr]">
-        <PerformanceChart />
-        <RecentInterviews />
-      </div>
+      {/* Row 3: AI Coaching Team */}
+      <section>
+        <AiCoachesGrid />
+      </section>
+
+      {/* Row 4: Analytics & History Tabs */}
+      <section>
+        <Tabs defaultValue="performance" className="w-full">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-bold tracking-tight">History & Analytics</h2>
+            <TabsList className="bg-muted/50 rounded-full">
+              <TabsTrigger value="performance" className="rounded-full">Performance</TabsTrigger>
+              <TabsTrigger value="recent" className="rounded-full">Recent</TabsTrigger>
+            </TabsList>
+          </div>
+          <TabsContent value="performance" className="mt-0 outline-none">
+            <div className="h-[350px]">
+              <PerformanceChart />
+            </div>
+          </TabsContent>
+          <TabsContent value="recent" className="mt-0 outline-none">
+            <div className="min-h-[350px]">
+              <RecentInterviews />
+            </div>
+          </TabsContent>
+        </Tabs>
+      </section>
+
     </div>
   )
 }

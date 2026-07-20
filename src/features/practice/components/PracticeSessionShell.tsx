@@ -11,10 +11,10 @@ import { ReportView } from "./views/ReportView"
 
 import { ScenarioSelectionView } from "./views/ScenarioSelectionView"
 
-type InterviewState = "scenario-select" | "setup" | "countdown" | "recording" | "analyzing" | "report"
+type PracticeState = "scenario-select" | "setup" | "countdown" | "recording" | "analyzing" | "report"
 
-export function InterviewShell() {
-  const [currentState, setCurrentState] = useState<InterviewState>("scenario-select")
+export function PracticeSessionShell() {
+  const [currentState, setCurrentState] = useState<PracticeState>("scenario-select")
   const router = useRouter()
 
   return (

@@ -2,6 +2,7 @@ import * as React from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Calendar, ArrowRight } from "lucide-react"
+import Link from "next/link"
 import { mockUpcomingInterview } from "../data/mock"
 
 export function UpcomingInterview() {
@@ -19,8 +20,10 @@ export function UpcomingInterview() {
       </div>
 
       <div className="mt-8 p-6 pt-2">
-        <Button className="w-full sm:w-auto rounded-full font-medium" size="sm">
-          Continue Practice <ArrowRight className="ml-2 size-3.5" />
+        <Button className="w-full sm:w-auto rounded-full font-medium" size="sm" asChild>
+          <Link href="/practice">
+            Continue Practice <ArrowRight className="ml-2 size-3.5" />
+          </Link>
         </Button>
       </div>
     </Card>

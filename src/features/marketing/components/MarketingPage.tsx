@@ -47,7 +47,7 @@ export function MarketingPage() {
               className="mt-4 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center"
             >
               <Button size="lg" className="rounded-full px-8 shadow-sm h-12 text-base" asChild>
-                <Link href="/interview">
+                <Link href="/practice">
                   Start Practicing Free <ArrowRight className="ml-2 size-4" />
                 </Link>
               </Button>

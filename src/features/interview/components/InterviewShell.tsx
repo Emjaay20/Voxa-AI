@@ -9,14 +9,20 @@ import { RecordingView } from "./views/RecordingView"
 import { AnalysisView } from "./views/AnalysisView"
 import { ReportView } from "./views/ReportView"
 
-type InterviewState = "setup" | "countdown" | "recording" | "analyzing" | "report"
+import { ScenarioSelectionView } from "./views/ScenarioSelectionView"
+
+type InterviewState = "scenario-select" | "setup" | "countdown" | "recording" | "analyzing" | "report"
 
 export function InterviewShell() {
-  const [currentState, setCurrentState] = useState<InterviewState>("setup")
+  const [currentState, setCurrentState] = useState<InterviewState>("scenario-select")
   const router = useRouter()
 
   return (
     <div className="flex h-full min-h-[80vh] w-full flex-col items-center justify-center p-6">
+      {currentState === "scenario-select" && (
+        <ScenarioSelectionView onSelect={() => setCurrentState("setup")} />
+      )}
+
       {currentState === "setup" && (
         <SetupView onStart={() => setCurrentState("countdown")} />
       )}

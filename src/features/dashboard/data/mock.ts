@@ -20,19 +20,49 @@ export const mockUpcomingInterview = {
 }
 
 export const mockCoaches = [
-  { id: "1", name: "Interview Coach", role: "Analyzes structure, STAR method, overall delivery.", status: "Ready", percent: 100, icon: "Target", colorClass: "text-blue-500", bgClass: "bg-blue-500/10" },
-  { id: "2", name: "Grammar Coach", role: "Finds filler words, grammar issues, clarity problems.", status: "Analyzing...", percent: 45, icon: "MessageCircle", colorClass: "text-purple-500", bgClass: "bg-purple-500/10" },
-  { id: "3", name: "Confidence Coach", role: "Measures hesitation, certainty, speech confidence.", status: "Waiting", percent: 0, icon: "BrainCircuit", colorClass: "text-emerald-500", bgClass: "bg-emerald-500/10" },
-  { id: "4", name: "Technical Coach", role: "Reviews correctness, depth, engineering decisions.", status: "Ready", percent: 100, icon: "Code", colorClass: "text-amber-500", bgClass: "bg-amber-500/10" },
-  { id: "5", name: "Conversation Coach", role: "Evaluates pacing, engagement, and active listening.", status: "Analyzing...", percent: 80, icon: "Sparkles", colorClass: "text-cyan-500", bgClass: "bg-cyan-500/10" },
-  { id: "6", name: "Negotiation Coach", role: "Salary discussions, communication, positioning.", status: "Ready", percent: 100, icon: "Users", colorClass: "text-rose-500", bgClass: "bg-rose-500/10" },
+  { id: "1", name: "Communication Coach", role: "Simplifies ideas, finds confusing sentences, clarity.", status: "Ready", percent: 100, icon: "MessageCircle", colorClass: "text-blue-500", bgClass: "bg-blue-500/10" },
+  { id: "2", name: "Delivery Coach", role: "Analyzes pace, energy, pauses, and vocal tone.", status: "Analyzing...", percent: 45, icon: "Mic", colorClass: "text-purple-500", bgClass: "bg-purple-500/10" },
+  { id: "3", name: "Confidence Coach", role: "Measures filler words, certainty, and presence.", status: "Waiting", percent: 0, icon: "BrainCircuit", colorClass: "text-emerald-500", bgClass: "bg-emerald-500/10" },
+  { id: "4", name: "Storytelling Coach", role: "Evaluates narrative, examples, hooks, and structure.", status: "Ready", percent: 100, icon: "Sparkles", colorClass: "text-amber-500", bgClass: "bg-amber-500/10" },
+  { id: "5", name: "Listener Coach", role: "Audience perspective: 'This part was confusing.'", status: "Analyzing...", percent: 80, icon: "Users", colorClass: "text-cyan-500", bgClass: "bg-cyan-500/10" },
+  { id: "6", name: "Domain Expert", role: "Technical accuracy, scenario-specific requirements.", status: "Ready", percent: 100, icon: "Code", colorClass: "text-rose-500", bgClass: "bg-rose-500/10" },
 ]
 
 export const mockMetrics = {
-  totalInterviews: 42,
-  avgScore: 8.4,
-  areasForImprovement: 3,
+  totalInterviews: 12,
+  averageScore: 84,
+  streakDays: 12,
 }
+
+export const mockInterviews = [
+  {
+    id: "1",
+    title: "Google SWE Interview",
+    date: "2026-07-19",
+    score: 88,
+    duration: "45 min",
+    type: "Technical",
+    improvements: ["System Design clarity", "STAR method structure"]
+  },
+  {
+    id: "2",
+    title: "Stripe Product Manager",
+    date: "2026-07-18",
+    score: 92,
+    duration: "30 min",
+    type: "Behavioral",
+    improvements: ["More concise answers"]
+  },
+  {
+    id: "3",
+    title: "Q3 Sales Pitch Demo",
+    date: "2026-07-15",
+    score: 76,
+    duration: "60 min",
+    type: "Presentation",
+    improvements: ["Objection handling", "Closing confidence"]
+  }
+]
 
 export const mockPerformanceData = [
   { month: "Jan", confidence: 3, clarity: 3 },

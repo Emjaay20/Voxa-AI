@@ -28,7 +28,7 @@ export function MarketingPage() {
             className="flex flex-col items-center gap-8"
           >
             <h1 className="max-w-5xl text-5xl font-extrabold tracking-tight sm:text-6xl md:text-7xl lg:text-8xl text-balance leading-[1.1]">
-              Ace your next interview with AI coaching that actually teaches you.
+              Become the communicator people remember.
             </h1>
             
             <motion.p 
@@ -37,7 +37,7 @@ export function MarketingPage() {
               transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
               className="max-w-2xl text-lg text-muted-foreground sm:text-xl text-balance leading-relaxed"
             >
-              Practice realistic interviews, receive detailed feedback from specialized AI coaches, and improve every answer before the real interview.
+              Practice every important conversation before it happens. Get instant, staff-level feedback from our team of specialist AI coaches to speak with clarity, confidence, and impact.
             </motion.p>
             
             <motion.div 
@@ -94,7 +94,7 @@ export function MarketingPage() {
         <Section className="py-32">
           <div className="mb-20 text-center">
             <h2 className="text-3xl font-bold tracking-tight sm:text-5xl">Engineered for growth.</h2>
-            <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">Stop guessing what went wrong. We break down your performance so you can focus on exactly what matters.</p>
+            <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">Stop guessing what went wrong. We break down your communication so you can focus on exactly what matters.</p>
           </div>
 
           <div className="grid gap-8 md:grid-cols-3 max-w-6xl mx-auto">
@@ -106,9 +106,9 @@ export function MarketingPage() {
               <div className="flex size-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
                 <Mic className="size-7" />
               </div>
-              <h3 className="text-2xl font-bold">Simulate Real Interviews</h3>
+              <h3 className="text-2xl font-bold">Simulate High-Stakes Scenarios</h3>
               <p className="text-muted-foreground leading-relaxed text-lg">
-                Speak naturally to your AI interviewer in a zero-pressure environment. No awkward scheduling.
+                Practice job interviews, presentations, and sales pitches in a zero-pressure environment.
               </p>
             </motion.div>
 
@@ -120,9 +120,9 @@ export function MarketingPage() {
               <div className="flex size-14 items-center justify-center rounded-2xl bg-secondary text-secondary-foreground">
                 <BrainCircuit className="size-7" />
               </div>
-              <h3 className="text-2xl font-bold">Receive Staff-Level Feedback</h3>
+              <h3 className="text-2xl font-bold">Receive Specialist Feedback</h3>
               <p className="text-muted-foreground leading-relaxed text-lg">
-                6 autonomous agents simultaneously grade your responses for clarity, confidence, and precision.
+                6 autonomous agents simultaneously grade your responses for clarity, confidence, and storytelling.
               </p>
             </motion.div>
 

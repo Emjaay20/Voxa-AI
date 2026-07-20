@@ -7,15 +7,12 @@ import { mockRecentInterviews } from "../data/mock"
 
 export function RecentInterviews() {
   return (
-    <Card className="flex h-full flex-col rounded-[24px] border-border/50 p-6 shadow-sm">
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold tracking-tight">Recent Interviews</h3>
-        <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
-          View all <ArrowRight className="ml-1 size-3" />
-        </Button>
-      </div>
-
-      <div className="flex flex-col gap-4">
+    <Card className="rounded-[24px] border-border/40 shadow-sm h-full flex flex-col bg-card">
+      <CardHeader className="pb-2 flex-none">
+        <CardTitle className="text-lg font-bold">Recent Sessions</CardTitle>
+        <CardDescription>Your latest practice recordings.</CardDescription>
+      </CardHeader>
+      <div className="flex flex-col gap-4 p-6 pt-0">
         {mockRecentInterviews.map((interview) => (
           <div key={interview.id} className="group flex items-center justify-between rounded-xl border border-transparent p-3 hover:bg-muted/50 hover:border-border/50 transition-all">
             <div className="flex items-center gap-4">

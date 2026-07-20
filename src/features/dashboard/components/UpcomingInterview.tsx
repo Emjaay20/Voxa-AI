@@ -6,19 +6,19 @@ import { mockUpcomingInterview } from "../data/mock"
 
 export function UpcomingInterview() {
   return (
-    <Card className="flex flex-col justify-between overflow-hidden rounded-[24px] border-border/50 bg-card p-6 shadow-sm relative h-full">
-      <div className="absolute top-0 left-0 w-1 h-full bg-primary" />
-      
-      <div className="flex flex-col gap-1">
-        <div className="flex items-center gap-2 text-muted-foreground mb-3">
-          <Calendar className="size-4" />
-          <span className="text-sm font-medium uppercase tracking-wider">Upcoming</span>
+    <Card className="rounded-[24px] border-border/40 bg-card shadow-sm h-full flex flex-col justify-between overflow-hidden relative group cursor-pointer hover:border-primary/20 transition-all">
+      <div className="p-6 pb-2 z-10 flex-none">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Calendar className="size-4 text-primary" />
+            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Today's Practice</h3>
+          </div>
         </div>
         <h3 className="text-2xl font-bold tracking-tight">{mockUpcomingInterview.company} {mockUpcomingInterview.role}</h3>
         <p className="text-muted-foreground">{mockUpcomingInterview.day} at {mockUpcomingInterview.time}</p>
       </div>
 
-      <div className="mt-8">
+      <div className="mt-8 p-6 pt-2">
         <Button className="w-full sm:w-auto rounded-full font-medium" size="sm">
           Continue Practice <ArrowRight className="ml-2 size-3.5" />
         </Button>

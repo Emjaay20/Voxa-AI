@@ -19,3 +19,18 @@ Adopted a modular Next.js monolith with Supabase over a microservices/event-driv
 
 **Reason**: 
 Maximizes developer velocity for a 3-day hackathon while maintaining clean boundaries for future scaling.
+
+---
+
+### Sprint 1 & 2: Design System & Core UI Components
+Established the foundational design tokens (OKLCH, Geist font, spacing, motion) and integrated 12 `shadcn/ui` components refactored to a Staff Engineer level standard (Loading, Error states, high-contrast badges).
+
+**AI Used**:
+- **Copilot**: Accelerated repetitive component creation and refactoring.
+- **AntiGravity**: Executed architectural restructuring (`cn.ts`, Providers, empty states).
+
+**Decision**:
+Rejected hardcoded styles in favor of CSS variables (`@theme inline`) and explicit props for interaction states (`error`, `isLoading`).
+
+**Reason**:
+Creates an impenetrable, scalable design system that guarantees a premium UX regardless of who builds the feature pages later.

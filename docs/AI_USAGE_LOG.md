@@ -17,3 +17,11 @@ This document specifically tracks our daily AI usage for the Devpost submission,
 **Outcome:** Created structured folder layouts, North Star product principles, and strict GitHub documentation (UI Review, AI Log, Build Log).  
 **Decision:** Locked the architecture phase early.  
 **Why:** To maximize time spent building user-facing features with high quality.
+
+---
+
+**Task:** Built Core UI Components library & structural improvements (Sprint 2).  
+**Primary AI:** Copilot & AntiGravity  
+**Outcome:** Generated 12 shadcn components, created semantic aliases (`cn.ts`), injected React Query & Theme providers, and implemented strict `error` and `isLoading` prop variants on core inputs.  
+**Decision:** Enforced a rigid design token scale for radius and motion across all components.  
+**Why:** Prevent fragmentation of UI scaling and hardcoded colors; forces the team to build a cohesive premium product.

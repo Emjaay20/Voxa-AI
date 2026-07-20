@@ -1,19 +1,19 @@
 import * as React from "react"
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/cn"
 
-interface PageHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+interface DashboardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   heading: string
   description?: string
   children?: React.ReactNode
 }
 
-export function PageHeader({
+export function DashboardHeader({
   heading,
   description,
   className,
   children,
   ...props
-}: PageHeaderProps) {
+}: DashboardHeaderProps) {
   return (
     <div
       className={cn("flex flex-col items-start gap-4 md:flex-row md:justify-between md:items-center mb-8", className)}

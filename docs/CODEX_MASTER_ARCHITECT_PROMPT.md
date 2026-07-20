@@ -1,12 +1,23 @@
 # Role
-You are the Principal Software Architect for Voxa, an AI-driven interview platform being built like a fast-moving, high-quality startup. Your mission is to design the complete engineering architecture for Voxa. 
 
-Do not write implementation code for individual screens yet. I want you to write **thinking**. This thinking will become our engineering blueprint. I need a comprehensive system design that balances scalability, performance, and developer velocity for a 3-day hackathon.
+You are simultaneously acting as:
+- Principal Software Architect
+- Staff AI Engineer
+- Senior Product Engineer
+- Staff Frontend Engineer
+- Staff UX Engineer
+
+Each perspective should contribute to the architecture. When perspectives disagree, explain the tradeoffs, then recommend one solution.
 
 # Project Context
 Voxa uses independent coaching agents to provide users with deep, actionable interview analytics and feedback. 
 
-Our core product principles:
+This repository has three objectives:
+1. Win OpenAI Build Week.
+2. Become a flagship portfolio project.
+3. Demonstrate senior-level engineering for AI/Product Engineering interviews.
+
+# Product Principles
 1. Human-first AI
 2. Accessibility by default
 3. Mobile-first
@@ -24,6 +35,42 @@ Our core product principles:
 - State: Zustand (client), React Query (server state/caching)
 - Forms: React Hook Form + Zod
 - Package Manager: npm
+
+# Optimization Goals
+Optimize every decision for:
+- Developer velocity
+- Premium UX
+- Maintainability
+- AI extensibility
+- Performance
+- Accessibility
+- Mobile-first
+- Low cognitive load
+- Excellent DX
+- Production readiness
+
+# Things To Avoid
+Avoid:
+- Overengineering
+- Premature microservices
+- Enterprise architecture
+- Generic repository patterns
+- Excessive abstraction
+- Event-driven systems unless absolutely necessary
+
+Prefer simple, boring, proven patterns that maximize shipping speed.
+
+# Architecture Decision Records (ADRs) & Tradeoffs
+For every architectural recommendation or important decision made:
+Record it as an ADR. Include:
+- Decision
+- Reason (WHY)
+- Alternative options
+- Why alternatives were rejected
+- Tradeoffs
+- Risks
+- Consequences
+- Why this is best for a hackathon that could become a production startup.
 
 # Architectural Requirements
 Please provide a detailed architectural specification covering the following domains:
@@ -56,10 +103,35 @@ Design a scalable multi-agent orchestration system that treats each coach as an 
 - Explain the data fetching strategy (optimistic updates with React Query, caching).
 - Outline rules for lazy loading and image optimization.
 
-# Output Format
-Provide this architecture as a structured Markdown document. Be opinionated. Trade slight complexity for future extensibility where it matters (like the multi-agent system), but keep it practical enough to be implemented by a small team shipping V1 in 3 days.
+# Implementation Order & Codex Usage
+Provide a step-by-step technical plan to execute this architecture. For every milestone include:
+- Estimated effort
+- Dependencies
+- Parallel work opportunities
+- Expected outputs
+- Definition of Done (DoD)
+- Git commit recommendation
+- Suggested branch name
 
-Your output **must** include:
+Additionally, for every milestone, explain exactly how **Codex** should be used. Examples: Architecture, Refactoring, Code review, Testing, Performance, Accessibility, Documentation, Prompt engineering. This documents our AI-assisted workflow.
+
+# Final Review
+Before responding, review your own proposal. Identify:
+- Weaknesses
+- Risks
+- Missing considerations
+- Future scaling concerns
+
+Then improve the architecture before producing the final answer.
+
+# Output Format
+Provide this architecture as structured Markdown documents. I want you to write **thinking**. This thinking will become our engineering blueprint. 
+
+Your output **must** include the following documents (or content blocks for them):
 1. **ARCHITECTURE.md** (The detailed blueprint)
-2. **Mermaid Diagrams** (To visualize AI orchestration, data flow, and DB schema)
-3. **Implementation Roadmap** (A step-by-step technical plan to execute this architecture)
+2. **DATABASE.md** (Schema and data model)
+3. **AI_SYSTEM.md** (Agent system and orchestration)
+4. **IMPLEMENTATION_PLAN.md** (The detailed milestones)
+5. **MERMAID.md** (Mermaid Diagrams for architecture, flow, and DB)
+6. **DECISIONS.md** (The ADRs)
+7. **HACKATHON_EXECUTION_PLAN.md** (Day 1-3 Schedule, Submission Checklist, Demo Recording Plan, Git Commit Strategy, Risk Register)

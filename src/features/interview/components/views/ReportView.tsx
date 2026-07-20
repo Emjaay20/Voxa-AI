@@ -3,7 +3,7 @@ import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { ArrowRight, UserCheck, Sparkles } from "lucide-react"
-import { mockCoaches } from "../../dashboard/data/mock"
+import { mockCoaches } from "@/features/dashboard/data/mock"
 import { cn } from "@/lib/cn"
 
 interface ReportViewProps {

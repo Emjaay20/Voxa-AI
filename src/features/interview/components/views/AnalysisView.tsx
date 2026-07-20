@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 import { Card } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Target, MessageCircle, BrainCircuit, Code, Sparkles, Users, CheckCircle2, Loader2 } from "lucide-react"
-import { mockCoaches } from "../../dashboard/data/mock"
+import { mockCoaches } from "@/features/dashboard/data/mock"
 import { cn } from "@/lib/cn"
 
 const iconMap: Record<string, React.ElementType> = {

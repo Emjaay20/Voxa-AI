@@ -12,10 +12,12 @@ const iconMap: Record<string, React.ElementType> = {
 }
 
 interface AnalysisViewProps {
-  onComplete: () => void
+  transcript: string
+  scenarioId: string
+  onComplete: (reportData: any) => void
 }
 
-export function AnalysisView({ onComplete }: AnalysisViewProps) {
+export function AnalysisView({ transcript, scenarioId, onComplete }: AnalysisViewProps) {
   // Initialize progress state for each coach (0 to 100)
   const [progressState, setProgressState] = useState<Record<string, number>>(() => {
     const initialState: Record<string, number> = {}
@@ -23,9 +25,30 @@ export function AnalysisView({ onComplete }: AnalysisViewProps) {
     return initialState
   })
 
-  const [allDone, setAllDone] = useState(false)
+  const [isApiDone, setIsApiDone] = useState(false)
+  const [reportData, setReportData] = useState<any>(null)
 
   useEffect(() => {
+    // 1. Kick off the actual API call
+    const fetchAnalysis = async () => {
+      try {
+        const res = await fetch("/api/analyze", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ transcript, scenarioId }),
+        })
+        const data = await res.json()
+        setReportData(data)
+        setIsApiDone(true)
+      } catch (err) {
+        console.error("Failed to fetch analysis", err)
+        // Fallback for errors so we don't get stuck
+        setIsApiDone(true)
+      }
+    }
+    fetchAnalysis()
+
+    // 2. Drive the progress bars
     const intervals: NodeJS.Timeout[] = []
     
     mockCoaches.forEach(coach => {
@@ -35,8 +58,14 @@ export function AnalysisView({ onComplete }: AnalysisViewProps) {
       const interval = setInterval(() => {
         setProgressState(prev => {
           const current = prev[coach.id]
-          // Add random chunk
-          const next = Math.min(100, current + (Math.random() * 15))
+          // If API is done, snap to 100
+          if (isApiDone) {
+            return { ...prev, [coach.id]: 100 }
+          }
+          // Otherwise approach 90% but don't cross it
+          if (current >= 90) return prev
+          
+          const next = Math.min(90, current + (Math.random() * 8))
           return { ...prev, [coach.id]: next }
         })
       }, speed)
@@ -45,18 +74,24 @@ export function AnalysisView({ onComplete }: AnalysisViewProps) {
     })
 
     return () => intervals.forEach(clearInterval)
-  }, [])
+  }, [transcript, scenarioId, isApiDone])
 
-  // Check if all are done
+  // 3. When everything hits 100, wait a moment and transition
   useEffect(() => {
-    const isDone = Object.values(progressState).every(val => val >= 100)
-    if (isDone && !allDone) {
-      setAllDone(true)
-      setTimeout(() => {
-        onComplete()
-      }, 1500) // Brief pause to let user see all "Done" before transitioning
+    if (isApiDone) {
+      // Ensure all progress is showing 100%
+      setProgressState(prev => {
+        const next: Record<string, number> = {}
+        Object.keys(prev).forEach(k => next[k] = 100)
+        return next
+      })
+
+      const timer = setTimeout(() => {
+        onComplete(reportData)
+      }, 1500)
+      return () => clearTimeout(timer)
     }
-  }, [progressState, allDone, onComplete])
+  }, [isApiDone, reportData, onComplete])
 
   return (
     <motion.div 
@@ -67,7 +102,7 @@ export function AnalysisView({ onComplete }: AnalysisViewProps) {
     >
       <div className="text-center">
         <h2 className="text-3xl font-bold tracking-tight mb-2">The Voxa Coaching Team</h2>
-        <p className="text-muted-foreground text-lg">is reviewing your interview.</p>
+        <p className="text-muted-foreground text-lg">is reviewing your practice session.</p>
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

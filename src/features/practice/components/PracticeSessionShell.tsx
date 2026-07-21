@@ -15,12 +15,18 @@ type PracticeState = "scenario-select" | "setup" | "countdown" | "recording" | "
 
 export function PracticeSessionShell() {
   const [currentState, setCurrentState] = useState<PracticeState>("scenario-select")
+  const [scenarioId, setScenarioId] = useState<string>("interview")
+  const [transcript, setTranscript] = useState<string>("")
+  const [reportData, setReportData] = useState<any>(null)
   const router = useRouter()
 
   return (
     <div className="flex h-full min-h-[80vh] w-full flex-col items-center justify-center p-6">
       {currentState === "scenario-select" && (
-        <ScenarioSelectionView onSelect={() => setCurrentState("setup")} />
+        <ScenarioSelectionView onSelect={(id) => {
+          setScenarioId(id)
+          setCurrentState("setup")
+        }} />
       )}
 
       {currentState === "setup" && (
@@ -32,15 +38,25 @@ export function PracticeSessionShell() {
       )}
       
       {currentState === "recording" && (
-        <RecordingView onFinish={() => setCurrentState("analyzing")} />
+        <RecordingView onFinish={(text) => {
+          setTranscript(text)
+          setCurrentState("analyzing")
+        }} />
       )}
       
       {currentState === "analyzing" && (
-        <AnalysisView onComplete={() => setCurrentState("report")} />
+        <AnalysisView 
+          transcript={transcript} 
+          scenarioId={scenarioId} 
+          onComplete={(data) => {
+            setReportData(data)
+            setCurrentState("report")
+          }} 
+        />
       )}
       
       {currentState === "report" && (
-        <ReportView onFinish={() => router.push("/dashboard")} />
+        <ReportView reportData={reportData} onFinish={() => router.push("/dashboard")} />
       )}
     </div>
   )

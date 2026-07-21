@@ -84,8 +84,28 @@ export function RecordingView({ onFinish }: RecordingViewProps) {
         method: "POST",
         body: formData,
       })
-      const data = await res.json()
-      if (data.text) {
+
+      // Vercel may return an HTML error page (e.g., 404) which breaks JSON parsing.
+      // Guard against that by checking the response type before calling .json().
+      let data: any = {}
+      const contentType = res.headers.get("content-type") || ""
+      if (!res.ok) {
+        // Non‑2xx response – read as text for debugging and surface a clear error.
+        const errorText = await res.text()
+        console.error("Transcription API error:", res.status, errorText)
+        onFinish(`Transcription failed (status ${res.status}).`, seconds)
+        return
+      }
+      if (contentType.includes("application/json")) {
+        data = await res.json()
+      } else {
+        // Unexpected content – likely an HTML error page.
+        const raw = await res.text()
+        console.error("Unexpected non‑JSON response from transcribe API:", raw)
+        onFinish("Transcription failed: server returned unexpected response.", seconds)
+        return
+      }
+      if (data?.text) {
         onFinish(data.text, seconds)
       } else {
         onFinish("Transcription failed to return text.", seconds)

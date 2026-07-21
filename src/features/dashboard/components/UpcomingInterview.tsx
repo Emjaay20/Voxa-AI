@@ -1,9 +1,10 @@
 import * as React from "react"
 import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
 import { Calendar, ArrowRight } from "lucide-react"
 import Link from "next/link"
 import { mockUpcomingInterview } from "../data/mock"
+import { cn } from "@/lib/cn"
 
 export function UpcomingInterview() {
   return (
@@ -20,11 +21,12 @@ export function UpcomingInterview() {
       </div>
 
       <div className="mt-8 p-6 pt-2">
-        <Button className="w-full sm:w-auto rounded-full font-medium" size="sm" asChild>
-          <Link href="/practice">
-            Continue Practice <ArrowRight className="ml-2 size-3.5" />
-          </Link>
-        </Button>
+        <Link 
+          href="/practice" 
+          className={cn(buttonVariants({ variant: "default", size: "sm" }), "w-full sm:w-auto rounded-full font-medium")}
+        >
+          Continue Practice <ArrowRight className="ml-2 size-3.5" />
+        </Link>
       </div>
     </Card>
   )

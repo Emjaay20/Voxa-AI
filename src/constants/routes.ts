@@ -3,6 +3,6 @@ export const routes = {
   dashboard: "/dashboard",
   login: "/login",
   signup: "/signup",
-  interview: "/interview",
+  practice: "/practice",
   analytics: "/analytics",
 } as const;

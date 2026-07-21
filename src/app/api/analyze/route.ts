@@ -1,45 +1,22 @@
 import { NextResponse } from "next/server"
 import { openai } from "@/lib/openai"
+import { mockAnalysis } from "@/lib/dev/fallback-analysis"
+import { z } from "zod"
+import { zodResponseFormat } from "openai/helpers/zod"
 
-const createPrompt = (coachType: string, transcript: string, scenarioId: string) => {
-  let systemInstructions = ""
+const CoachFeedbackSchema = z.object({
+  score: z.number().describe("A score from 0 to 100"),
+  strengths: z.array(z.string()).describe("Specific strengths found in the response"),
+  weaknesses: z.array(z.string()).describe("Specific areas for improvement"),
+  advice: z.string().describe("One actionable piece of advice")
+})
 
-  switch (coachType) {
-    case "Clarity":
-      systemInstructions = "You are a Clarity Coach. Analyze the user's transcript. Focus on conciseness, jargon use, confusing sentences, and logical flow. Provide actionable advice to simplify their message."
-      break
-    case "Delivery":
-      systemInstructions = "You are a Delivery Coach. Analyze the user's transcript. Since you only have text, look for signs of rambling, run-on sentences, or structural pacing issues. Provide actionable advice on energy, pauses, and tone."
-      break
-    case "Confidence":
-      systemInstructions = "You are a Confidence Coach. Analyze the user's transcript. Look for filler words (um, uh, like), hedging phrases (I think, maybe), and apologetic language. Provide actionable advice to project certainty."
-      break
-    case "Storytelling":
-      systemInstructions = "You are a Storytelling Coach. Analyze the user's transcript. Check if they use frameworks like STAR (Situation, Task, Action, Result). Evaluate their hooks, examples, and narrative arc. Provide actionable advice on structuring their story better."
-      break
-    case "Engagement":
-      systemInstructions = "You are an Engagement Coach. Analyze the user's transcript from the audience's perspective. Would they be bored? Is it relevant? Provide actionable advice on making the message more captivating and audience-centric."
-      break
-    case "Expert":
-      systemInstructions = `You are a Domain Expert Coach for the scenario: ${scenarioId}. Analyze the technical accuracy, industry-specific vocabulary, and depth of the user's response. Provide actionable advice on proving their expertise.`
-      break
-  }
-
-  return {
-    model: "gpt-4o-mini", // fast and capable for MVP
-    messages: [
-      { 
-        role: "system", 
-        content: `${systemInstructions}\n\nRespond strictly in the following JSON format: { "score": number (0-100), "strengths": ["string"], "weaknesses": ["string"], "advice": "string" }`
-      },
-      { 
-        role: "user", 
-        content: transcript 
-      }
-    ],
-    response_format: { type: "json_object" }
-  } as const
-}
+const AnalysisSchema = z.object({
+  results: z.array(z.object({
+    coach: z.enum(["Clarity", "Delivery", "Confidence", "Storytelling", "Engagement", "Expert"]),
+    feedback: CoachFeedbackSchema
+  })).describe("An array containing exactly 6 feedback objects, one for each coach.")
+})
 
 export async function POST(req: Request) {
   try {
@@ -49,26 +26,43 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "No transcript provided" }, { status: 400 })
     }
 
-    const coaches = ["Clarity", "Delivery", "Confidence", "Storytelling", "Engagement", "Expert"]
+    const systemPrompt = `You are Voxa, an elite team of 6 communication coaches analyzing a user's response to the scenario: "${scenarioId}".
+    
+    You must evaluate the transcript from 6 distinct perspectives:
+    1. Clarity: Evaluate conciseness, jargon, confusing sentences, and logical flow.
+    2. Delivery: Evaluate signs of rambling, run-on sentences, or structural pacing issues.
+    3. Confidence: Evaluate filler words (um, uh), hedging phrases, and apologetic language.
+    4. Storytelling: Evaluate the use of frameworks like STAR, narrative hooks, and examples.
+    5. Engagement: Evaluate the response from an audience's perspective (relevance, captivation).
+    6. Expert: Evaluate the technical accuracy, vocabulary, and depth for the specific scenario.
+    
+    Provide brutal, actionable, and specific feedback for each of the 6 coaches.`
 
-    // Execute all 6 coach prompts concurrently
-    const analysisPromises = coaches.map(async (coach) => {
-      const completion = await openai.chat.completions.create(createPrompt(coach, transcript, scenarioId))
-      
-      const result = completion.choices[0].message.content
-      const parsedResult = result ? JSON.parse(result) : null
-
-      return {
-        coach,
-        feedback: parsedResult
-      }
+    const completion = await openai.beta.chat.completions.parse({
+      model: "gpt-4o-mini",
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: transcript }
+      ],
+      response_format: zodResponseFormat(AnalysisSchema, "analysis_results")
     })
 
-    const results = await Promise.all(analysisPromises)
+    const parsedResult = completion.choices[0].message.parsed
 
-    return NextResponse.json({ results })
+    if (!parsedResult) {
+      throw new Error("Failed to parse structured output")
+    }
+
+    return NextResponse.json(parsedResult)
   } catch (error: any) {
     console.error("Analysis error:", error)
+    
+    // Graceful fallback for Hackathon if quota is exceeded or network fails
+    if (error.status === 429 || error.status === 401 || error.code === "insufficient_quota") {
+      console.warn("Returning fallback mock data due to OpenAI API limits.")
+      return NextResponse.json(mockAnalysis)
+    }
+
     return NextResponse.json(
       { error: error.message || "Failed to analyze transcript" },
       { status: 500 }

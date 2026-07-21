@@ -4,10 +4,11 @@ import * as React from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
 import { Container } from "@/components/layout/Container"
 import { Section } from "@/components/layout/Section"
 import { Mic, BrainCircuit, TrendingUp, ArrowRight, ShieldCheck } from "lucide-react"
+import { cn } from "@/lib/cn"
 
 export function MarketingPage() {
   return (
@@ -46,11 +47,12 @@ export function MarketingPage() {
               transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
               className="mt-4 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center"
             >
-              <Button size="lg" className="rounded-full px-8 shadow-sm h-12 text-base" asChild>
-                <Link href="/practice">
-                  Start Practicing Free <ArrowRight className="ml-2 size-4" />
-                </Link>
-              </Button>
+              <Link 
+                href="/practice" 
+                className={cn(buttonVariants({ variant: "default", size: "lg" }), "rounded-full px-8 shadow-sm h-12 text-base")}
+              >
+                Start Practicing Free <ArrowRight className="ml-2 size-4" />
+              </Link>
             </motion.div>
           </motion.div>
 

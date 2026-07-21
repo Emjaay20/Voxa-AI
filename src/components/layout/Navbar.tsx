@@ -18,7 +18,7 @@ export function Navbar() {
               <Link href="/login">Sign In</Link>
             </Button>
             <Button asChild className="rounded-full shadow-sm">
-              <Link href="/interview">Start Your Interview</Link>
+              <Link href="/practice">Start Practicing</Link>
             </Button>
           </nav>
         </div>

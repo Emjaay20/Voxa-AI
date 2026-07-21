@@ -1,7 +1,7 @@
 import * as React from "react"
 import { motion } from "framer-motion"
 import { Card } from "@/components/ui/card"
-import { Briefcase, Presentation, Users, Megaphone } from "lucide-react"
+import { Briefcase, Presentation, Users, Megaphone, Mic } from "lucide-react"
 import { cn } from "@/lib/cn"
 
 const scenarios = [
@@ -41,6 +41,24 @@ const scenarios = [
     bgClass: "bg-rose-500/10",
     locked: true,
   },
+  {
+    id: "podcast",
+    title: "Podcast Interview",
+    description: "Sound conversational, engaging, and articulate on a microphone.",
+    icon: Mic,
+    colorClass: "text-purple-500",
+    bgClass: "bg-purple-500/10",
+    locked: true,
+  },
+  {
+    id: "classroom",
+    title: "Classroom Lecture",
+    description: "Keep students engaged and break down complex academic concepts clearly.",
+    icon: Users, // Can reuse Users or import GraduationCap later
+    colorClass: "text-indigo-500",
+    bgClass: "bg-indigo-500/10",
+    locked: true,
+  },
 ]
 
 interface ScenarioSelectionViewProps {
@@ -55,7 +73,7 @@ export function ScenarioSelectionView({ onSelect }: ScenarioSelectionViewProps) 
       className="flex w-full max-w-5xl flex-col gap-10 pb-12"
     >
       <div className="text-center md:text-left">
-        <h2 className="text-3xl font-bold tracking-tight mb-2">What would you like to practice?</h2>
+        <h2 className="text-3xl font-bold tracking-tight mb-2">Choose a Communication Challenge</h2>
         <p className="text-lg text-muted-foreground">Select a scenario to configure your AI coaching team.</p>
       </div>
 

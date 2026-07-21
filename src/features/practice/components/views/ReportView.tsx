@@ -93,7 +93,7 @@ export function ReportView({ reportData, onFinish, onTryAgain }: ReportViewProps
         <Card className="p-8 rounded-[32px] border-border/50 bg-card shadow-sm flex flex-col justify-center">
           <div className="flex items-center gap-3 text-primary mb-4">
             <UserCheck className="size-6" />
-            <h3 className="text-xl font-bold tracking-tight">Executive Summary</h3>
+            <h3 className="text-xl font-bold tracking-tight">Your Coach's Verdict</h3>
           </div>
           <p className="text-lg leading-relaxed text-foreground/90 font-medium">
             "{reportData.executiveSummary || "Your response has been analyzed. Review the specific feedback below."}"

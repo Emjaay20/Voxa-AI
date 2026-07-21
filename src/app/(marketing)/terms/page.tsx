@@ -6,12 +6,10 @@ export default function TermsPage() {
   return (
     <div className="min-h-screen bg-canvas text-ink py-24 px-6">
       <div className="mx-auto max-w-3xl">
-        <Button variant="ghost" asChild className="mb-8 -ml-4">
-          <Link href="/">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Home
-          </Link>
-        </Button>
+        <Link href="/" className="mb-8 -ml-4 btn-ghost w-fit">
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back to Home
+        </Link>
         <h1 className="font-serif text-4xl md:text-5xl mb-8">Terms and Conditions</h1>
         
         <div className="prose prose-neutral max-w-none space-y-6 text-ink-muted">

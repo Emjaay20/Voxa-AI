@@ -1,14 +1,15 @@
 import { pipeline, env } from "@huggingface/transformers"
 
-// Prevent transformers.js from downloading models repeatedly
-env.allowLocalModels = true
-env.cacheDir = "./.cache"
-
 let transcriberInstance: any = null
 
 export async function localTranscribe(file: File): Promise<string> {
   try {
     if (!transcriberInstance) {
+      // Prevent transformers.js from downloading models repeatedly
+      // Use /tmp for Vercel serverless writable filesystem
+      env.allowLocalModels = true
+      env.cacheDir = "/tmp/.cache"
+
       console.log("Loading Xenova/whisper-tiny.en local model...")
       transcriberInstance = await pipeline('automatic-speech-recognition', 'Xenova/whisper-tiny.en')
     }

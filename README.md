@@ -26,11 +26,30 @@ This proves Voxa isn't an evaluator—it's a coach that teaches you.
 
 ## 🏗️ Architecture & AI Integration
 
-Voxa is built on a feature-first Next.js (App Router) architecture, utilizing a cutting-edge, highly resilient AI pipeline:
+**Resilient Multi‑Provider AI Pipeline**
 
-1. **Audio Capture & Transcription Orchestrator**: Real-time microphone recording in the browser. The audio is routed through an intelligent transcription orchestrator. By default, it uses OpenAI's Whisper model (`whisper-1`), but seamlessly falls back to **Transformers.js** for local, in-browser transcription if external APIs fail or hit rate limits.
-2. **Multi-Model LLM Orchestrator**: The transcript is passed to a sophisticated AI router. By default, it calls `gpt-4o-mini` (acting as a committee of 6 distinct coaches) using OpenAI's Structured Outputs (Zod). If OpenAI experiences an outage or hits quota limits, the orchestrator automatically falls back to **Google Gemini** or **Groq** to guarantee the coaching analysis always completes.
-3. **Graceful Degradation (Local Mock)**: If all API keys are missing, invalid, or all external networks fail, the backend includes a final self-healing fallback mechanism. It intercepts the errors and returns a highly realistic **local mocked response**, ensuring the UI flow and user experience never break during a live demo. *(Note to judges: The app will gracefully degrade to return simulated feedback so the UX can still be evaluated under any condition).*
+Voxa is designed to remain operational even when one AI provider becomes unavailable. The orchestration pipeline follows this sequence:
+
+1. **OpenAI Whisper** transcribes recorded audio.
+2. **OpenAI GPT‑4o‑mini** analyzes the transcript using Structured Outputs and generates coaching feedback.
+3. If OpenAI is unavailable, rate‑limited, or experiences a service disruption, the orchestrator automatically retries the request using **Google Gemini**.
+4. If Gemini is also unavailable, the request falls back to **Groq**.
+5. If every external provider fails, Voxa returns a realistic **local mock response** so the application remains fully demonstrable.
+
+This engineering‑focused design demonstrates reliable fallback handling and ensures the demo never breaks.
+
+## 🤖 Built with Codex & GPT‑5.6
+
+**Primary AI assistants:** Codex and GPT‑5.6 served as the principal architecture and implementation collaborators throughout development.
+
+**Roles and contributions:**
+- Product architecture and database schema design
+- AI orchestration and prompt engineering
+- Structured Output schema definition
+- Core component refactoring and UI improvements
+- Performance optimization and debugging of complex issues
+
+**Supporting tooling:** Development primarily took place in Google’s Antigravity IDE using its GPT OSS integration, with GitHub Copilot assisting on inline implementation tasks. These productivity tools complemented the primary Codex/GPT‑5.6 workflow without diluting the core narrative.
 
 ## 🤖 Built with Codex & GPT-5.6
 

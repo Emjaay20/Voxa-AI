@@ -1,7 +1,8 @@
 import * as React from "react"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { Container } from "@/components/layout/Container"
+import { cn } from "@/lib/cn"
 
 export function Navbar() {
   return (
@@ -14,12 +15,12 @@ export function Navbar() {
             </Link>
           </div>
           <nav className="flex items-center gap-4">
-            <Button variant="ghost" asChild className="hidden sm:inline-flex text-muted-foreground hover:text-foreground">
-              <Link href="/login">Sign In</Link>
-            </Button>
-            <Button asChild className="rounded-full shadow-sm">
-              <Link href="/practice">Start Practicing</Link>
-            </Button>
+            <Link href="/login" className={cn(buttonVariants({ variant: "ghost" }), "hidden sm:inline-flex text-muted-foreground hover:text-foreground")}>
+              Sign In
+            </Link>
+            <Link href="/practice" className={cn(buttonVariants({ variant: "default" }), "rounded-full shadow-sm")}>
+              Start Practicing
+            </Link>
           </nav>
         </div>
       </Container>

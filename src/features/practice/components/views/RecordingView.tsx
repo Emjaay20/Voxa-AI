@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Square, Loader2 } from "lucide-react"
 
 interface RecordingViewProps {
-  onFinish: (transcript: string) => void
+  onFinish: (transcript: string, durationSeconds: number) => void
 }
 
 export function RecordingView({ onFinish }: RecordingViewProps) {
@@ -13,9 +13,12 @@ export function RecordingView({ onFinish }: RecordingViewProps) {
   const [isProcessing, setIsProcessing] = useState(false)
   
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
+  const streamRef = useRef<MediaStream | null>(null)
   const audioChunksRef = useRef<Blob[]>([])
 
   useEffect(() => {
+    let isMounted = true
+
     // Start Timer
     const timer = setInterval(() => {
       setSeconds(s => s + 1)
@@ -23,6 +26,14 @@ export function RecordingView({ onFinish }: RecordingViewProps) {
 
     // Initialize MediaRecorder
     navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+      // If the component unmounted while we were waiting for permissions,
+      // immediately stop the tracks and discard the stream.
+      if (!isMounted) {
+        stream.getTracks().forEach(track => track.stop())
+        return
+      }
+
+      streamRef.current = stream
       const mediaRecorder = new MediaRecorder(stream)
       mediaRecorderRef.current = mediaRecorder
 
@@ -34,23 +45,30 @@ export function RecordingView({ onFinish }: RecordingViewProps) {
 
       mediaRecorder.onstop = async () => {
         const audioBlob = new Blob(audioChunksRef.current, { type: "audio/webm" })
+        // Clean up tracks immediately so the microphone indicator turns off
+        if (streamRef.current) {
+          streamRef.current.getTracks().forEach(track => track.stop())
+        }
         await handleTranscription(audioBlob)
-        // Clean up tracks
-        stream.getTracks().forEach(track => track.stop())
       }
 
       mediaRecorder.start()
     }).catch(err => {
+      if (!isMounted) return
       console.error("Microphone access denied or error:", err)
       // Fallback for testing if no mic
       setIsProcessing(true)
-      setTimeout(() => onFinish("I didn't actually record anything because microphone access failed, but this is a fallback transcript."), 2000)
+      setTimeout(() => onFinish("I didn't actually record anything because microphone access failed, but this is a fallback transcript.", seconds), 2000)
     })
 
     return () => {
+      isMounted = false
       clearInterval(timer)
       if (mediaRecorderRef.current && mediaRecorderRef.current.state === "recording") {
         mediaRecorderRef.current.stop()
+      }
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop())
       }
     }
   }, [onFinish])
@@ -68,13 +86,13 @@ export function RecordingView({ onFinish }: RecordingViewProps) {
       })
       const data = await res.json()
       if (data.text) {
-        onFinish(data.text)
+        onFinish(data.text, seconds)
       } else {
-        onFinish("Transcription failed to return text.")
+        onFinish("Transcription failed to return text.", seconds)
       }
     } catch (error) {
       console.error(error)
-      onFinish("An error occurred during transcription.")
+      onFinish("An error occurred during transcription.", seconds)
     }
   }
 
@@ -98,9 +116,12 @@ export function RecordingView({ onFinish }: RecordingViewProps) {
     >
       <div className="flex-1 flex flex-col items-center justify-center text-center w-full">
         <span className="text-sm font-semibold tracking-widest text-primary uppercase mb-6">Question 1 of 5</span>
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight text-balance">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight text-balance mb-4">
           Tell me about a time you had to lead a project without formal authority.
         </h2>
+        <p className="text-muted-foreground font-medium text-lg">
+          Please speak clearly for about 30 seconds to get the best AI analysis.
+        </p>
       </div>
 
       <div className="mt-12 w-full flex flex-col items-center gap-8 bg-background/50 backdrop-blur-sm border border-border/50 rounded-[32px] p-8 shadow-sm">

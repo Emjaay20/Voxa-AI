@@ -1,71 +1,28 @@
 import * as React from "react"
 import { motion } from "framer-motion"
 import { Card } from "@/components/ui/card"
-import { Briefcase, Presentation, Users, Megaphone, Mic } from "lucide-react"
+import { Briefcase, Presentation, Users, Megaphone, Mic, GraduationCap, Scale, BookOpen, University, MessageCircle } from "lucide-react"
 import { cn } from "@/lib/cn"
 
-const scenarios = [
-  {
-    id: "interview",
-    title: "Job Interview",
-    description: "Practice answering behavioral and technical questions under pressure.",
-    icon: Briefcase,
-    colorClass: "text-blue-500",
-    bgClass: "bg-blue-500/10",
-    locked: false,
-  },
-  {
-    id: "presentation",
-    title: "Presentation",
-    description: "Rehearse a slide deck, practice pacing, and refine your storytelling.",
-    icon: Presentation,
-    colorClass: "text-amber-500",
-    bgClass: "bg-amber-500/10",
-    locked: true,
-  },
-  {
-    id: "sales",
-    title: "Sales Pitch",
-    description: "Practice objection handling, empathy, and closing confidence.",
-    icon: Megaphone,
-    colorClass: "text-emerald-500",
-    bgClass: "bg-emerald-500/10",
-    locked: true,
-  },
-  {
-    id: "difficult-convo",
-    title: "Difficult Conversation",
-    description: "Navigate sensitive topics, give tough feedback, or ask for a raise.",
-    icon: Users,
-    colorClass: "text-rose-500",
-    bgClass: "bg-rose-500/10",
-    locked: true,
-  },
-  {
-    id: "podcast",
-    title: "Podcast Interview",
-    description: "Sound conversational, engaging, and articulate on a microphone.",
-    icon: Mic,
-    colorClass: "text-purple-500",
-    bgClass: "bg-purple-500/10",
-    locked: true,
-  },
-  {
-    id: "classroom",
-    title: "Classroom Lecture",
-    description: "Keep students engaged and break down complex academic concepts clearly.",
-    icon: Users, // Can reuse Users or import GraduationCap later
-    colorClass: "text-indigo-500",
-    bgClass: "bg-indigo-500/10",
-    locked: true,
-  },
-]
+const iconMap: Record<string, any> = {
+  'briefcase': Briefcase,
+  'presentation': Presentation,
+  'chart': Megaphone,
+  'users': Users,
+  'mic': Mic,
+  'graduation-cap': GraduationCap,
+  'scale': Scale,
+  'book-open': BookOpen,
+  'university': University,
+  'message-circle': MessageCircle,
+}
 
 interface ScenarioSelectionViewProps {
+  scenarios: any[]
   onSelect: (scenarioId: string) => void
 }
 
-export function ScenarioSelectionView({ onSelect }: ScenarioSelectionViewProps) {
+export function ScenarioSelectionView({ scenarios = [], onSelect }: ScenarioSelectionViewProps) {
   return (
     <motion.div 
       initial={{ opacity: 0, y: 15 }}
@@ -79,25 +36,26 @@ export function ScenarioSelectionView({ onSelect }: ScenarioSelectionViewProps) 
 
       <div className="grid gap-6 sm:grid-cols-2">
         {scenarios.map((scenario) => {
-          const Icon = scenario.icon
+          const Icon = iconMap[scenario.icon] || Briefcase
+          const locked = scenario.status !== 'active'
           
           return (
             <Card 
               key={scenario.id} 
-              onClick={() => !scenario.locked && onSelect(scenario.id)}
+              onClick={() => !locked && onSelect(scenario.id)}
               className={cn(
                 "group relative overflow-hidden rounded-[24px] border-border/40 p-6 transition-all",
-                scenario.locked 
+                locked 
                   ? "bg-muted/30 cursor-not-allowed opacity-70" 
                   : "bg-card shadow-sm hover:border-primary/30 hover:shadow-md cursor-pointer"
               )}
             >
               <div className="flex flex-col gap-4">
                 <div className="flex items-center justify-between">
-                  <div className={cn("flex size-12 items-center justify-center rounded-2xl", scenario.bgClass, scenario.colorClass)}>
+                  <div className={cn("flex size-12 items-center justify-center rounded-2xl", "bg-primary/10", "text-primary")}>
                     <Icon className="size-6" />
                   </div>
-                  {scenario.locked && (
+                  {locked && (
                     <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground bg-muted px-2 py-1 rounded-full">Coming Soon</span>
                   )}
                 </div>
@@ -109,7 +67,7 @@ export function ScenarioSelectionView({ onSelect }: ScenarioSelectionViewProps) 
               </div>
 
               {/* Hover effect for unlocked cards */}
-              {!scenario.locked && (
+              {!locked && (
                 <div className="absolute inset-0 border-2 border-primary/0 group-hover:border-primary/10 rounded-[24px] transition-colors pointer-events-none" />
               )}
             </Card>

@@ -6,23 +6,32 @@ import { BrainCircuit, CheckCircle2, Loader2 } from "lucide-react"
 
 interface AnalysisViewProps {
   transcript: string
+  durationSeconds: number
   scenarioId: string
+  sessionId?: string
+  isGuest?: boolean
   onComplete: (data: any) => void
 }
 
 const loadingSteps = [
-  "Transcribing audio with Whisper...",
-  "Evaluating clarity and pacing...",
-  "Consulting Expert Coach...",
-  "Synthesizing executive summary...",
-  "Finalizing premium report..."
+  "Speech transcribed",
+  "Measuring pacing",
+  "Detecting filler words",
+  "Calculating confidence",
+  "Building communication profile",
+  "AI coaches discussing performance"
 ]
 
-export function AnalysisView({ transcript, scenarioId, onComplete }: AnalysisViewProps) {
+export function AnalysisView({ transcript, durationSeconds, scenarioId, sessionId, isGuest = false, onComplete }: AnalysisViewProps) {
   const [progress, setProgress] = useState(0)
   const [currentStepIndex, setCurrentStepIndex] = useState(0)
 
+  const hasFired = React.useRef(false)
+
   useEffect(() => {
+    if (hasFired.current) return
+    hasFired.current = true
+
     // Fake progress for the UI while we wait for the real API
     const progressInterval = setInterval(() => {
       setProgress(p => (p >= 90 ? 90 : p + 5))
@@ -34,12 +43,16 @@ export function AnalysisView({ transcript, scenarioId, onComplete }: AnalysisVie
     }, 1500)
 
     // Start real analysis
-    fetch("/api/analyze", {
+    fetch(isGuest ? "/api/demo/analyze" : "/api/analyze", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ transcript, scenarioId })
+      body: JSON.stringify({ transcript, scenarioId, durationSeconds, sessionId })
     })
-    .then(res => res.json())
+    .then(async res => {
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || "Failed to analyze your practice session.")
+      return data
+    })
     .then(data => {
       clearInterval(progressInterval)
       clearInterval(stepInterval)
@@ -51,47 +64,51 @@ export function AnalysisView({ transcript, scenarioId, onComplete }: AnalysisVie
     })
     .catch(err => {
       console.error(err)
-      onComplete({ error: "Failed to connect to AI analysis engine." })
+      onComplete({ error: err.message || "Failed to connect to AI analysis engine." })
     })
 
     return () => {
       clearInterval(progressInterval)
       clearInterval(stepInterval)
     }
-  }, [transcript, scenarioId, onComplete])
+  }, [durationSeconds, isGuest, onComplete, scenarioId, sessionId, transcript])
 
   return (
-    <div className="flex w-full max-w-md flex-col items-center justify-center gap-8 text-center">
-      <div className="relative flex size-24 items-center justify-center rounded-full bg-primary/10">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
-          className="absolute inset-0 rounded-full border-2 border-primary/20 border-t-primary"
-        />
-        <BrainCircuit className="size-10 text-primary animate-pulse" />
+    <div className="flex w-full max-w-md flex-col items-center justify-center gap-10 text-left">
+      <div className="flex flex-col gap-2 w-full text-center">
+        <h2 className="text-3xl font-bold tracking-tight">Analyzing your communication...</h2>
       </div>
 
-      <div className="flex flex-col gap-2 w-full">
-        <h2 className="text-2xl font-bold tracking-tight">Analyzing Performance</h2>
-        <div className="h-6 relative overflow-hidden">
-          <AnimatePresence mode="popLayout">
-            <motion.p
-              key={currentStepIndex}
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -20, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="text-sm text-muted-foreground absolute w-full text-center"
+      <div className="w-full flex flex-col gap-4 pl-4 md:pl-10">
+        {loadingSteps.map((step, index) => {
+          const isActive = index === currentStepIndex;
+          const isComplete = index < currentStepIndex || progress === 100;
+          return (
+            <motion.div
+              key={step}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: isActive || isComplete ? 1 : 0.4, x: 0 }}
+              className="flex items-center gap-4"
             >
-              {loadingSteps[currentStepIndex]}
-            </motion.p>
-          </AnimatePresence>
-        </div>
+              <div className={`flex size-6 shrink-0 items-center justify-center rounded-full ${isComplete ? 'bg-primary text-primary-foreground' : isActive ? 'bg-primary/20 text-primary' : 'bg-muted text-muted-foreground'}`}>
+                {isComplete ? (
+                  <CheckCircle2 className="size-4" />
+                ) : isActive ? (
+                  <Loader2 className="size-4 animate-spin" />
+                ) : (
+                  <div className="size-2 rounded-full bg-current opacity-50" />
+                )}
+              </div>
+              <span className={`text-lg font-medium ${isComplete ? 'text-foreground' : isActive ? 'text-foreground animate-pulse' : 'text-muted-foreground'}`}>
+                {step}
+              </span>
+            </motion.div>
+          );
+        })}
       </div>
 
-      <div className="w-full flex flex-col gap-2">
+      <div className="w-full flex flex-col gap-2 opacity-0">
         <Progress value={progress} className="h-2 w-full" />
-        <span className="text-xs font-medium text-muted-foreground self-end">{progress}%</span>
       </div>
     </div>
   )

@@ -1,25 +1,23 @@
 import * as React from "react"
 import { Card } from "@/components/ui/card"
 import { Sparkles } from "lucide-react"
-import { mockInsight } from "../data/mock"
+
 
 export function AiInsightCard() {
   return (
-    <Card className="flex flex-col justify-center rounded-[24px] border-border/50 bg-gradient-to-br from-primary/5 via-background to-background p-6 shadow-sm h-full relative overflow-hidden">
+    <div className="flex flex-col gap-4 relative overflow-hidden py-4 border-b border-border/20 last:border-0 px-2 -mx-2">
       {/* Subtle glow effect */}
-      <div className="absolute -top-10 -right-10 size-32 rounded-full bg-primary/20 blur-[50px] pointer-events-none" />
+      <div className="absolute -top-10 -right-10 size-32 rounded-full bg-primary/5 blur-[50px] pointer-events-none" />
       
-      <div className="relative z-10 flex flex-col gap-3">
-        <div className="flex items-center gap-2">
-          <div className="flex size-8 items-center justify-center rounded-full bg-primary/20 text-primary">
-            <Sparkles className="size-4" />
-          </div>
-          <h3 className="font-semibold tracking-tight">{mockInsight.title}</h3>
-        </div>
-        <p className="text-muted-foreground text-sm leading-relaxed text-balance">
-          {mockInsight.text}
+      <div className="relative z-10 flex items-center gap-4">
+        <Sparkles className="size-6 text-primary" />
+        <h3 className="font-bold tracking-tight text-xl text-foreground">Coaching Insight</h3>
+      </div>
+      <div className="relative z-10">
+        <p className="text-muted-foreground font-medium leading-relaxed max-w-md">
+          Practice more sessions to unlock personalized AI insights based on your communication patterns.
         </p>
       </div>
-    </Card>
+    </div>
   )
 }

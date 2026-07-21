@@ -1,33 +1,31 @@
 import * as React from "react"
-import { Card } from "@/components/ui/card"
-import { buttonVariants } from "@/components/ui/button"
-import { Calendar, ArrowRight } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import Link from "next/link"
-import { mockUpcomingSession } from "../data/mock"
-import { cn } from "@/lib/cn"
 
-export function UpcomingSession() {
+export function UpcomingSession({ scenarios = [] }: { scenarios?: any[] }) {
+  const activeScenarios = scenarios.filter(s => s.status === 'active')
+  
+  if (activeScenarios.length === 0) {
+    activeScenarios.push({ id: 'general', title: 'General Practice', description: 'Available anytime' })
+  }
+
   return (
-    <Card className="rounded-[24px] border-border/40 bg-card shadow-sm h-full flex flex-col justify-between overflow-hidden relative group cursor-pointer hover:border-primary/20 transition-all">
-      <div className="p-6 pb-2 z-10 flex-none">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Calendar className="size-4 text-primary" />
-            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Today's Practice</h3>
-          </div>
-        </div>
-        <h3 className="text-2xl font-bold tracking-tight">{mockUpcomingSession.company} {mockUpcomingSession.role}</h3>
-        <p className="text-muted-foreground">{mockUpcomingSession.day} at {mockUpcomingSession.time}</p>
-      </div>
-
-      <div className="mt-8 p-6 pt-2">
+    <div className="flex flex-col gap-6">
+      {activeScenarios.map((scenario) => (
         <Link 
-          href="/practice" 
-          className={cn(buttonVariants({ variant: "default", size: "sm" }), "w-full sm:w-auto rounded-full font-medium")}
+          key={scenario.id} 
+          href={`/practice?scenarioId=${scenario.id}`}
+          className="group flex flex-col gap-2 py-5 border-b border-border/20 last:border-0 hover:bg-muted/10 transition-colors px-2 -mx-2 rounded-xl"
         >
-          Continue Practice <ArrowRight className="ml-2 size-3.5" />
+          <div className="flex items-center justify-between">
+            <h3 className="text-2xl font-extrabold tracking-tight group-hover:text-primary transition-colors">
+              {scenario.title}
+            </h3>
+            <ArrowRight className="size-6 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+          </div>
+          <p className="text-muted-foreground line-clamp-1">{scenario.description}</p>
         </Link>
-      </div>
-    </Card>
+      ))}
+    </div>
   )
 }

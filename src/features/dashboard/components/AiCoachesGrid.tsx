@@ -2,7 +2,7 @@ import * as React from "react"
 import { Card } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Target, MessageCircle, BrainCircuit, Code, Sparkles, Users, CheckCircle2, Loader2, Clock } from "lucide-react"
-import { mockCoaches } from "../data/mock"
+import { COACHES } from "../data/constants"
 import { cn } from "@/lib/cn"
 
 const iconMap: Record<string, React.ElementType> = {
@@ -19,7 +19,7 @@ export function AiCoachesGrid() {
     <div className="flex flex-col gap-4">
       <h2 className="text-xl font-bold tracking-tight">AI Coaching Team</h2>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {mockCoaches.map((coach) => {
+        {COACHES.map((coach, index) => {
           const Icon = iconMap[coach.icon] || Target
           const isReady = coach.status === "Ready"
           const isAnalyzing = coach.status === "Analyzing..."

@@ -1,4 +1,22 @@
 export const mockAnalysis = {
+  overallScore: 87,
+  executiveSummary: "If I interviewed you tomorrow, I'd likely move you to the next round. Your technical explanation was flawless, and you projected great confidence. However, you need to tighten up your pacing and eliminate the filler words to sound truly executive.",
+  topStrengths: [
+    "Flawless technical explanation with accurate industry terminology.",
+    "Followed the STAR method perfectly.",
+    "Projected certainty when discussing decisions."
+  ],
+  topWeaknesses: [
+    "Used 'um' and 'like' too frequently.",
+    "Sentences were too long, affecting natural breathing.",
+    "The 'Situation' context took up too much time compared to the 'Action'."
+  ],
+  fillerWords: [
+    { word: "um", count: 14 },
+    { word: "like", count: 11 },
+    { word: "basically", count: 5 }
+  ],
+  speakingPace: 145,
   results: [
     {
       coach: "Clarity",

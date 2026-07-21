@@ -12,6 +12,15 @@ const CoachFeedbackSchema = z.object({
 })
 
 const AnalysisSchema = z.object({
+  overallScore: z.number().describe("Overall communication score from 0 to 100"),
+  executiveSummary: z.string().describe("A short 'If I interviewed you tomorrow...' personalized summary highlighting their overall performance."),
+  topStrengths: z.array(z.string()).max(3).describe("Top 3 strengths aggregated from all coaches."),
+  topWeaknesses: z.array(z.string()).max(3).describe("Top 3 weaknesses or habits holding them back."),
+  fillerWords: z.array(z.object({
+    word: z.string(),
+    count: z.number()
+  })).describe("List of repeated filler words and their counts."),
+  speakingPace: z.number().describe("Estimated speaking pace in words per minute (WPM)."),
   results: z.array(z.object({
     coach: z.enum(["Clarity", "Delivery", "Confidence", "Storytelling", "Engagement", "Expert"]),
     feedback: CoachFeedbackSchema

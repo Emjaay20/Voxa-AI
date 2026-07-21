@@ -3,6 +3,8 @@ import { analyzeCommunication } from "@/lib/ai/orchestrator"
 import { createClient } from "@/utils/supabase/server"
 import { cookies } from "next/headers"
 
+export const maxDuration = 60;
+
 export async function POST(req: Request) {
   try {
     const { transcript, scenarioId, durationSeconds, sessionId: existingSessionId } = await req.json()

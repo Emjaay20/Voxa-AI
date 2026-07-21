@@ -48,24 +48,36 @@ export function AnalysisView({ transcript, durationSeconds, scenarioId, sessionI
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ transcript, scenarioId, durationSeconds, sessionId })
     })
-    .then(async res => {
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error || "Failed to analyze your practice session.")
-      return data
-    })
-    .then(data => {
-      clearInterval(progressInterval)
-      clearInterval(stepInterval)
-      setProgress(100)
-      setCurrentStepIndex(loadingSteps.length - 1)
-      
-      // Add slight delay before transition so they see 100%
-      setTimeout(() => onComplete(data), 600)
-    })
-    .catch(err => {
-      console.error(err)
-      onComplete({ error: err.message || "Failed to connect to AI analysis engine." })
-    })
+      .then(async res => {
+        const contentType = res.headers.get("content-type") || ""
+        let data: any = {}
+        if (!res.ok) {
+          const errText = await res.text()
+          console.error("Analysis API error:", res.status, errText)
+          throw new Error(errText || "Analysis request failed")
+        }
+        if (contentType.includes("application/json")) {
+          data = await res.json()
+        } else {
+          const raw = await res.text()
+          console.error("Unexpected non-JSON response from analysis API:", raw)
+          throw new Error("Server returned unexpected response format")
+        }
+        return data
+      })
+      .then(data => {
+        clearInterval(progressInterval)
+        clearInterval(stepInterval)
+        setProgress(100)
+        setCurrentStepIndex(loadingSteps.length - 1)
+        
+        // Add slight delay before transition so they see 100%
+        setTimeout(() => onComplete(data), 600)
+      })
+      .catch(err => {
+        console.error(err)
+        onComplete({ error: err.message || "Failed to connect to AI analysis engine." })
+      })
 
     return () => {
       clearInterval(progressInterval)

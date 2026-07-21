@@ -6,6 +6,8 @@ import { createClient } from "@/utils/supabase/server"
 const GUEST_ANALYSIS_COOKIE = "voxa_guest_analysis_used"
 const GUEST_ANALYSIS_COOKIE_MAX_AGE = 60 * 60 * 24 * 30
 
+export const maxDuration = 60;
+
 export async function POST(req: Request) {
   try {
     const cookieStore = await cookies()

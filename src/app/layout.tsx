@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Voxa - AI Interview Coaching",
-  description: "Your personal AI interview coach. Practice, analyze, and land the job.",
+  title: "Voxa - AI Communication Coach",
+  description: "Your personal AI communication coach. Practice, analyze, and become the communicator people remember.",
 };
 
 export default function RootLayout({

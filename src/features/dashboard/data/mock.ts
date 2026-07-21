@@ -3,7 +3,7 @@ export const mockUser = {
   role: "Senior Product Manager",
   avatarUrl: "https://i.pravatar.cc/150?u=sarah",
   level: 6,
-  interviewsToNextLevel: 8,
+  sessionsToNextLevel: 8,
   streakDays: 12,
 }
 
@@ -12,7 +12,7 @@ export const mockInsight = {
   text: "You interrupt yourself 17% less than last week. Confidence improved by 12%. Keep slowing down before answering.",
 }
 
-export const mockUpcomingInterview = {
+export const mockUpcomingSession = {
   company: "Google",
   role: "SWE",
   day: "Friday",
@@ -29,12 +29,12 @@ export const mockCoaches = [
 ]
 
 export const mockMetrics = {
-  totalInterviews: 12,
+  totalSessions: 12,
   averageScore: 84,
   streakDays: 12,
 }
 
-export const mockInterviews = [
+export const mockSessions = [
   {
     id: "1",
     title: "Google SWE Interview",
@@ -73,7 +73,7 @@ export const mockPerformanceData = [
   { month: "Jun", confidence: 9.5, clarity: 7 },
 ]
 
-export const mockRecentInterviews = [
+export const mockRecentSessions = [
   {
     id: "1",
     role: "Meta Product Manager",

@@ -20,7 +20,7 @@ export function SetupView({ onStart }: SetupViewProps) {
       
       <h1 className="mb-2 text-3xl font-bold tracking-tight">System Check</h1>
       <p className="mb-8 text-muted-foreground text-balance">
-        Your camera and microphone are connected. Ensure you are in a quiet environment before beginning the mock interview.
+        Your camera and microphone are connected. Ensure you are in a quiet environment before beginning the practice session.
       </p>
 
       <div className="flex w-full flex-col gap-3">

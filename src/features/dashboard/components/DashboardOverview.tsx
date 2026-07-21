@@ -1,11 +1,11 @@
 import * as React from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ProgressJourney } from "./ProgressJourney"
-import { UpcomingInterview } from "./UpcomingInterview"
+import { UpcomingSession } from "./UpcomingSession"
 import { AiInsightCard } from "./AiInsightCard"
 import { AiCoachesGrid } from "./AiCoachesGrid"
 import { PerformanceChart } from "./PerformanceChart"
-import { RecentInterviews } from "./RecentInterviews"
+import { RecentSessions } from "./RecentSessions"
 
 export function DashboardOverview() {
   return (
@@ -19,7 +19,7 @@ export function DashboardOverview() {
       {/* Row 2: Upcoming Interview & AI Insight */}
       <section className="grid gap-6 md:grid-cols-2">
         <div className="h-[200px]">
-          <UpcomingInterview />
+          <UpcomingSession />
         </div>
         <div className="h-[200px]">
           <AiInsightCard />
@@ -48,7 +48,7 @@ export function DashboardOverview() {
           </TabsContent>
           <TabsContent value="recent" className="mt-0 outline-none">
             <div className="min-h-[350px]">
-              <RecentInterviews />
+              <RecentSessions />
             </div>
           </TabsContent>
         </Tabs>

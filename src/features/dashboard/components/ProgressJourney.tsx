@@ -9,13 +9,13 @@ export function ProgressJourney() {
       <div className="flex flex-col gap-2 flex-1 max-w-md">
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-bold tracking-tight">Level {mockUser.level} Candidate</h2>
-          <span className="text-sm font-medium text-muted-foreground">{mockUser.interviewsToNextLevel} interviews to Level {mockUser.level + 1}</span>
+          <span className="text-sm font-medium text-muted-foreground">{mockUser.sessionsToNextLevel} sessions to Level {mockUser.level + 1}</span>
         </div>
         <Progress value={65} className="h-2.5 w-full bg-muted/50" />
         
         <div className="flex items-center gap-6 mt-4">
           <div className="flex flex-col">
-            <span className="text-2xl font-bold tracking-tight">{mockMetrics.totalInterviews}</span>
+            <span className="text-2xl font-bold tracking-tight">{mockMetrics.totalSessions}</span>
             <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Practice Sessions</span>
           </div>
 

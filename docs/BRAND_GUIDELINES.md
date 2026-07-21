@@ -1,6 +1,6 @@
 # Brand Guidelines
 
-Voxa is the interview coach you wish you always had. Every pixel, word, and animation should reinforce this core identity.
+Voxa is the communication coach you wish you always had. Every pixel, word, and animation should reinforce this core identity.
 
 ## Voice & Tone
 - **Confident**: We know what we're talking about. No wishy-washy language.

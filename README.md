@@ -26,12 +26,11 @@ This proves Voxa isn't an evaluator—it's a coach that teaches you.
 
 ## 🏗️ Architecture & AI Integration
 
-Voxa is built on a feature-first Next.js (App Router) architecture, utilizing a cutting-edge AI pipeline:
+Voxa is built on a feature-first Next.js (App Router) architecture, utilizing a cutting-edge, highly resilient AI pipeline:
 
-1. **Audio Capture**: Real-time microphone recording in the browser.
-2. **Transcription**: OpenAI's Whisper model (`whisper-1`) transcribes the audio with high fidelity.
-3. **Structured Multi-Agent Coaching**: The transcript is passed to `gpt-4o-mini`, which acts as a committee of 6 distinct coaches (Clarity, Delivery, Confidence, Storytelling, Engagement, Expert). We use OpenAI's Structured Outputs (Zod) to guarantee a perfectly typed schema in a single lightning-fast API call.
-4. **Graceful Degradation**: The backend includes a self-healing fallback mechanism that seamlessly intercepts `429` (Quota) or `401` errors and returns realistic development mock data, ensuring the UI flow never breaks during a live demo. *(Note to judges: If API keys are missing or quota is exceeded, the app will gracefully degrade to return simulated feedback so the UX can still be evaluated).*
+1. **Audio Capture & Transcription Orchestrator**: Real-time microphone recording in the browser. The audio is routed through an intelligent transcription orchestrator. By default, it uses OpenAI's Whisper model (`whisper-1`), but seamlessly falls back to **Transformers.js** for local, in-browser transcription if external APIs fail or hit rate limits.
+2. **Multi-Model LLM Orchestrator**: The transcript is passed to a sophisticated AI router. By default, it calls `gpt-4o-mini` (acting as a committee of 6 distinct coaches) using OpenAI's Structured Outputs (Zod). If OpenAI experiences an outage or hits quota limits, the orchestrator automatically falls back to **Google Gemini** or **Groq** to guarantee the coaching analysis always completes.
+3. **Graceful Degradation (Local Mock)**: If all API keys are missing, invalid, or all external networks fail, the backend includes a final self-healing fallback mechanism. It intercepts the errors and returns a highly realistic **local mocked response**, ensuring the UI flow and user experience never break during a live demo. *(Note to judges: The app will gracefully degrade to return simulated feedback so the UX can still be evaluated under any condition).*
 
 ## 🤖 Built with Codex & GPT-5.6
 

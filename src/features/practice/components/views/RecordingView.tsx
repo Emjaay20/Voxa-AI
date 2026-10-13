@@ -44,7 +44,9 @@ export function RecordingView({ onFinish }: RecordingViewProps) {
       }
 
       mediaRecorder.onstop = async () => {
-        const audioBlob = new Blob(audioChunksRef.current, { type: "audio/webm" })
+        const audioBlob = new Blob(audioChunksRef.current, {
+          type: mediaRecorder.mimeType || "audio/webm",
+        })
         // Clean up tracks immediately so the microphone indicator turns off
         if (streamRef.current) {
           streamRef.current.getTracks().forEach(track => track.stop())
@@ -76,8 +78,12 @@ export function RecordingView({ onFinish }: RecordingViewProps) {
   const handleTranscription = async (blob: Blob) => {
     setIsProcessing(true)
     const formData = new FormData()
-    // Append a standard file name
-    formData.append("file", blob, "recording.webm")
+    const extension = blob.type.includes("mp4") || blob.type.includes("mpeg")
+      ? "mp4"
+      : blob.type.includes("ogg")
+        ? "ogg"
+        : "webm"
+    formData.append("file", blob, `recording.${extension}`)
 
     try {
       const res = await fetch("/api/transcribe", {

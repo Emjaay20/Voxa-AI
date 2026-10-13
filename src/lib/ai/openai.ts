@@ -1,13 +1,10 @@
-import { openai } from "@/lib/openai"
+import { getOpenAIClient } from "@/lib/openai"
 import { zodResponseFormat } from "openai/helpers/zod"
 import { AnalysisSchema, AnalysisResult } from "./types"
 import { getCoachSystemPrompt } from "../prompts/coach"
 
 export async function openAIAnalyze(transcript: string, scenarioSlug: string, previousWeaknesses?: string[], metrics?: any): Promise<AnalysisResult> {
-  if (!process.env.OPENAI_API_KEY) {
-    throw new Error("OPENAI_API_KEY is not set")
-  }
-
+  const openai = getOpenAIClient()
   const completion = await openai.chat.completions.parse({
     model: "gpt-4o-mini",
     messages: [
@@ -26,10 +23,16 @@ export async function openAIAnalyze(transcript: string, scenarioSlug: string, pr
 }
 
 export async function openAITranscribe(file: File): Promise<string> {
+  const openai = getOpenAIClient()
   const response = await openai.audio.transcriptions.create({
     file,
-    model: "whisper-1",
+    model: process.env.OPENAI_TRANSCRIPTION_MODEL || "whisper-1",
     language: "en",
   })
+
+  if (!response.text?.trim()) {
+    throw new Error("OpenAI transcription returned empty text")
+  }
+
   return response.text
 }

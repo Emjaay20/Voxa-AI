@@ -2,11 +2,16 @@ import OpenAI from "openai"
 import { AnalysisSchema, AnalysisResult } from "./types"
 import { getCoachSystemPrompt } from "../prompts/coach"
 
-// Initialize an OpenAI-compatible client pointed at Groq
-const groq = new OpenAI({
-  apiKey: process.env.GROQ_API_KEY,
-  baseURL: "https://api.groq.com/openai/v1"
-})
+function getGroqClient() {
+  if (!process.env.GROQ_API_KEY) {
+    throw new Error("GROQ_API_KEY is not set")
+  }
+
+  return new OpenAI({
+    apiKey: process.env.GROQ_API_KEY,
+    baseURL: "https://api.groq.com/openai/v1"
+  })
+}
 
 export async function groqAnalyze(transcript: string, scenarioSlug: string, previousWeaknesses?: string[], metrics?: any): Promise<AnalysisResult> {
   if (!process.env.GROQ_API_KEY) {
@@ -14,6 +19,7 @@ export async function groqAnalyze(transcript: string, scenarioSlug: string, prev
   }
 
   const systemPrompt = getCoachSystemPrompt(scenarioSlug, previousWeaknesses, metrics)
+  const groq = getGroqClient()
 
   const schemaTemplate = `
 {
@@ -58,11 +64,17 @@ export async function groqTranscribe(file: File): Promise<string> {
     throw new Error("GROQ_API_KEY is not set")
   }
 
+  const groq = getGroqClient()
   const response = await groq.audio.transcriptions.create({
     file,
-    model: "whisper-large-v3-turbo",
+    model: process.env.GROQ_TRANSCRIPTION_MODEL || "whisper-large-v3-turbo",
     language: "en",
     response_format: "json",
   })
+
+  if (!response.text?.trim()) {
+    throw new Error("Groq transcription returned empty text")
+  }
+
   return response.text
 }

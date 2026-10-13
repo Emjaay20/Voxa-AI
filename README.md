@@ -67,7 +67,7 @@ Voxa was built using a highly sophisticated autonomous AI workflow. We utilized 
 
 - **Framework**: Next.js 16 (App Router)
 - **Styling**: Tailwind CSS & Framer Motion
-- **AI**: OpenAI `whisper-1` & `gpt-4o-mini` (Structured Outputs)
+- **AI**: Groq `whisper-large-v3-turbo` or OpenAI `whisper-1` for transcription, plus OpenAI/Groq/Gemini analysis fallbacks
 - **Validation**: Zod
 - **Icons**: Lucide React
 
@@ -75,6 +75,6 @@ Voxa was built using a highly sophisticated autonomous AI workflow. We utilized 
 
 1. Clone the repository.
 2. Install dependencies: `npm install`
-3. Copy `.env.example` to `.env.local` and add your `OPENAI_API_KEY`.
+3. Copy `.env.example` to `.env.local` and add at least one of `GROQ_API_KEY` or `OPENAI_API_KEY`.
 4. Run the development server: `npm run dev`
 5. Visit `http://localhost:3000` and start a practice session!
